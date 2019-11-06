@@ -30,3 +30,5 @@ Route::get('animals/create','AnimalController@create')->name('animals.create');
 Route::post('animals','AnimalController@store')->name('animals.store');
 Route::get('animals/{id}','AnimalController@show')
   -> name('animals.show');
+Route::delete('animals/{id}','AnimalController@destroy')
+  ->name('animals.destroy');

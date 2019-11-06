@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Animal;
+use App\Enclosure;
 
 class AnimalController extends Controller
 {
@@ -28,7 +29,8 @@ class AnimalController extends Controller
     public function create()
     {
         //
-        return view('animals.create');
+        $enclosures=Enclosure::orderBy('name','asc')->get();
+        return view('animals.create',['enclosures' => $enclosures]);
     }
 
     /**
@@ -102,5 +104,10 @@ class AnimalController extends Controller
     public function destroy($id)
     {
         //
+        $animal =Animal::findOrFail($id);
+        $animal->delete();
+
+        return redirect()->route('animals.index')->with('message','Animal was deleted');
+
     }
 }
