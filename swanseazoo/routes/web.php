@@ -31,4 +31,11 @@ Route::post('animals','AnimalController@store')->name('animals.store');
 Route::get('animals/{id}','AnimalController@show')
   -> name('animals.show');
 Route::delete('animals/{id}','AnimalController@destroy')
-  ->name('animals.destroy');
+  ->name('animals.destroy'); 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

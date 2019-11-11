@@ -1,5 +1,5 @@
 
-@extends('layouts.app')
+@extends('layout zoo.app')
 
 @section('title','Animals')
 
