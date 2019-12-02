@@ -1,9 +1,10 @@
+
 @extends('layouts.app')
 
 @section('title','Posts')
 
 @section('content')
-<p>The blog posts of E world:</p>
+<h1>The blog posts of E world:</h1>
 <ul>
     @foreach ($posts as $post)
     <li><a href="{{ route('posts.show',['id'=>$post->id])}}">
@@ -11,5 +12,5 @@
     </li>
     @endforeach
 </ul>
-
+{{ $posts->links() }}
 @endsection

@@ -14,7 +14,8 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts=Post::All();
+       //$posts=Post::All();
+        $posts=Post::paginate(10);
         return view('posts.index',['posts'=>$posts]);
     }
 
@@ -26,6 +27,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('posts.create');
     }
 
     /**
@@ -37,6 +39,17 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData=$request->validate([
+            'title' => 'required|max:255',
+            'content'=> 'required',
+        ]);
+        $post =new Post;
+        $post->title= $validatedData['title'];
+        $post->content= $validatedData['content'];
+        $post->save();
+        session()->flash('message','Post was created.');
+        return redirect()-> route('posts.index');
+
     }
 
     /**

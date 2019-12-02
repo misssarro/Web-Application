@@ -12,8 +12,8 @@ class PostsTableSeeder extends Seeder
     public function run()
     {
         //
-        $posts= factory(App\Post::class,3)->create();
-        $tags=factory(App\Tag::class,3)->create();
+        $posts= factory(App\Post::class,50)->create();
+        $tags=factory(App\Tag::class,50)->create();
 
         App\Post::all()->each(function ($post) use ($tags){
             $post->tags()->attach(
