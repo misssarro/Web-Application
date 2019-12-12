@@ -27,8 +27,16 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'The E world') }}
+                    Blog
                 </a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+             <ul class="navbar-nav mr-auto">
+               <li class="nav-item">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+               </li>
+               <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -40,7 +48,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class=" navbar-nav ml-auto ">
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -58,7 +66,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                         <a class= "dropdown-item" href="{{ route('posts.index') }}"> Posts</a>
+                                         <a class= "dropdown-item" href="{{ route('posts.create') }}">Add Post</a>
+                                         <a class= "dropdown-item" href="{{ route('categories.index') }}">Categories</a>
+                                         <a class= "dropdown-item" href="{{ route('tags.index') }}">Tags</a>
+                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
@@ -73,20 +85,13 @@
                     </ul>
                 </div>
             </div>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-             <ul class="navbar-nav mr-auto">
-               <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-               </li>
-               <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
-                </li>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+              <!--  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Action</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+                </div>-->
             </li>
         </ul>
     </div>
@@ -101,8 +106,9 @@
             </ul>
         </div>
         @endif
+        <hr>
         @if (session('message'))
-            <p><b>{{ session('message') }}</b></p>
+            <p><b class="alert alert-success">{{ session('message') }}</b></p>
         @endif 
      <div class="container">
             @yield('content')

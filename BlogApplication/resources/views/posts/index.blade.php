@@ -4,13 +4,46 @@
 @section('title','Posts')
 
 @section('content')
-<h1>The blog posts of E world:</h1>
-<ul>
-    @foreach ($posts as $post)
-    <li><a href="{{ route('posts.show',['id'=>$post->id])}}">
-        {{ $post->title }}</a>
-    </li>
-    @endforeach
-</ul>
-{{ $posts->links() }}
+<br>
+<div class="row">
+   <div class="col-md-10">
+        <h1>The blog posts of E world:</h1>
+   </div>
+   
+   <div class="col-md-2">
+        <a href="{{ route('posts.create') }}" class=" btn btn-block btn-primary btn-sm">Create New Post</a>
+   </div>
+   <hr>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <th>#</th>
+                <th>Title</th>
+                <th>Body</th>
+                <th>Created At</th>
+                <th></th>
+            </thead>
+            <tbody>
+                @foreach ($posts as $post)
+                    <tr>
+                        <th>{{ $post->id }}</th>
+                        <td> {{ $post->title }}</td>
+                        <td>{{ substr($post->content,0,50)}}{{ strlen($post->body) > 50 ? "..." : " "}}</td>
+                        <td> {{ date('M j,Y',strtotime($post->created_at)) }}</td>
+                        <td><a href="{{ route('posts.show',$post->id) }}" class="btn btn-default btn-sm ">View</a><a href="{{ route('posts.edit',$post->id)}}" class="btn btn-default btn-sm ">Edit</a>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <div class="row text-center">
+            <div>
+                {{ $posts->links() }}
+            </div>
+        </div>
+    </div>
+
+</div>
+
 @endsection

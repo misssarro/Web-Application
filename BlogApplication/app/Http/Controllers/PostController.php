@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
+use App\Tag;
 class PostController extends Controller
 {
     /**
@@ -14,8 +16,10 @@ class PostController extends Controller
     public function index()
     {
         //
+
        //$posts=Post::All();
-        $posts=Post::paginate(10);
+        
+        $posts=Post::orderBy('id','desc')->paginate(5);
         return view('posts.index',['posts'=>$posts]);
     }
 
@@ -27,7 +31,10 @@ class PostController extends Controller
     public function create()
     {
         //
-        return view('posts.create');
+        $categories=Category::all();
+        $tags=Tag::all();
+
+        return view('posts.create',['categories'=>$categories,'tags'=>$tags]);
     }
 
     /**
@@ -40,15 +47,21 @@ class PostController extends Controller
     {
         //
         $validatedData=$request->validate([
-            'title' => 'required|max:255',
-            'content'=> 'required',
+            'title'         => 'required|max:255',
+            'content'       => 'required',
+            'category_id'   =>'required|integer',
         ]);
         $post =new Post;
+        $post->user_id = auth()->user()->id;
+        $post->category_id= $validatedData['category_id'];
         $post->title= $validatedData['title'];
         $post->content= $validatedData['content'];
         $post->save();
-        session()->flash('message','Post was created.');
-        return redirect()-> route('posts.index');
+        
+        $post->tags()->sync($request->tags,false);
+
+        session()->flash('message','Post was created successfully.');
+        return redirect()-> route('posts.show',$post->id);
 
     }
 
@@ -61,6 +74,7 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        
         $post= Post::findOrFail($id);
         return view('posts.show',['post'=>$post]);
     }
@@ -73,7 +87,20 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        //find the post in the database
+        //retuen a view and pass the post id of the post that is already created
+        $post= Post::findOrFail('$id');
+        $categories=Category::all();
+        $categories1=array();
+        foreach($categories as $category){
+            $categories1[$category->id]=$category->name;
+        }
+        $tags=Tag::all();
+        $tags1=array();
+        foreach($tags as $tag){
+            $tags1=[$tag->id]=$tag->name;
+        }
+        return view('posts.edit',['post'=>$post,'categories'=>$categories1,'tags'=>$tags1]);
     }
 
     /**
@@ -85,7 +112,29 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //validate the data, save it to the database and display sucess message then redirect the user to post(posts.show)
+        $validatedData=$request->validate([
+            'title' => 'required|max:255',
+            'content'=> 'required',
+            'category_id'=> 'required|integer',
+        ]);
+        $post=Post::findOrFail($id);
+        $post->title= $request->get('title');
+        $post->content=$request->get('content');
+        $post->category_id=$request->get('category_id');
+
+        $post->save();
+        
+        if(isset($request->tags)){
+          $post->tags()->sync($request->tags,true);
+        }
+        else{
+            $post->tags()->sync(array());
+        }
+        
+
+        session()->flash('message','Post was updated successfully.');
+        return redirect()-> route('posts.show',$post->id);
     }
 
     /**
@@ -97,5 +146,10 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        $post=Post::findOrfail($id);
+        $post->tags()->detach();
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('message',"Post was deleted");
     }
 }

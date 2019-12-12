@@ -17,7 +17,7 @@ class PostsTableSeeder extends Seeder
 
         App\Post::all()->each(function ($post) use ($tags){
             $post->tags()->attach(
-                $tags->random(rand(1,3))->pluck('id')->toArray()
+                $tags->random(rand(3,3))->pluck('id')->toArray()
             );
         });
     }
