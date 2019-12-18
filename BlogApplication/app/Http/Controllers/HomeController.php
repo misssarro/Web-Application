@@ -23,6 +23,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //return view('home');
+        return view('profiles.show',['user'=>auth()->user()]);
+    }
+    public function adminHome()
+    {
+        //return view('adminHome');
+        return view('profiles.show',['user'=>auth()->user()]);
     }
 }

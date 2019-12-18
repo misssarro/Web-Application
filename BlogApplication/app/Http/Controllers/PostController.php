@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use App\Post;
 use App\Category;
 use App\Tag;
+use Image;
 class PostController extends Controller
 {
     /**
@@ -56,6 +58,14 @@ class PostController extends Controller
         $post->category_id= $validatedData['category_id'];
         $post->title= $validatedData['title'];
         $post->content= $validatedData['content'];
+
+        if($request->hasFile('post_image')){
+            $image= $request->file('post_image');
+            $filename=time().'.'.$image->getClientOriginalExtension();
+            $path=public_path('images/'.$filename);
+            Image::make($image)->resize(300,300)->save($path);
+            $post->post_image=$filename;
+        }
         $post->save();
         
         $post->tags()->sync($request->tags,false);
@@ -74,8 +84,10 @@ class PostController extends Controller
     public function show($id)
     {
         //
-        
+       
         $post= Post::findOrFail($id);
+        $post->increment('page_view');
+        //$post->page_view += 1; 
         return view('posts.show',['post'=>$post]);
     }
 
@@ -89,7 +101,12 @@ class PostController extends Controller
     {
         //find the post in the database
         //retuen a view and pass the post id of the post that is already created
-        $post= Post::findOrFail('$id');
+ 
+        $post= Post::findOrFail($id);
+        if(auth()->user()->isAdmin xor $post->user_id === auth()->user()){
+             $this->authorize('update',$post);
+        }
+        
         $categories=Category::all();
         $categories1=array();
         foreach($categories as $category){
@@ -119,18 +136,18 @@ class PostController extends Controller
             'category_id'=> 'required|integer',
         ]);
         $post=Post::findOrFail($id);
-        $post->title= $request->get('title');
-        $post->content=$request->get('content');
-        $post->category_id=$request->get('category_id');
-
+        $post->title= $request->input('title');
+        $post->content=$request->input('content');
+        $post->category_id=$request->input('category_id');
+        //$tags=$request->input('tag',[]);
         $post->save();
         
-        if(isset($request->tags)){
+       /*if(isset($request->tags)){
           $post->tags()->sync($request->tags,true);
         }
         else{
             $post->tags()->sync(array());
-        }
+        }*/
         
 
         session()->flash('message','Post was updated successfully.');
@@ -147,6 +164,9 @@ class PostController extends Controller
     {
         //
         $post=Post::findOrfail($id);
+        if(auth()->user()->isAdmin xor $post->user_id === auth()->user()){
+            $this->authorize('delete',$post);
+       }
         $post->tags()->detach();
         $post->delete();
 

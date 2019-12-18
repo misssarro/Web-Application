@@ -17,8 +17,8 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <table class="table">
-            <thead>
+        <table class="table table-striped">
+            <thead class="thead-dark">
                 <th>#</th>
                 <th>Title</th>
                 <th>Body</th>
@@ -32,12 +32,15 @@
                         <td> {{ $post->title }}</td>
                         <td>{{ substr($post->content,0,50)}}{{ strlen($post->body) > 50 ? "..." : " "}}</td>
                         <td> {{ date('M j,Y',strtotime($post->created_at)) }}</td>
-                        <td><a href="{{ route('posts.show',$post->id) }}" class="btn btn-default btn-sm ">View</a><a href="{{ route('posts.edit',$post->id)}}" class="btn btn-default btn-sm ">Edit</a>
-                    </tr>
+                        <td><a href="{{ route('posts.show',$post->id) }}" class="btn btn-default btn-sm btn-outline-primary" >View</a>
+                       @can('update',$post)
+                            <a href="{{ route('posts.edit',$post->id)}}" class="btn btn-default btn-sm btn-outline-primary ">Edit</a>
+                       @endcan
+                        </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class="row text-center">
+        <div class="row justify-content-center" >
             <div>
                 {{ $posts->links() }}
             </div>

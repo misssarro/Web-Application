@@ -26,7 +26,6 @@
                 <tr>
                     <th>#</th>
                     <th>Title</th>
-                    <th>Category</th>
                     <th></th>
                 </tr>
             </thead>
@@ -35,9 +34,6 @@
                 <tr>
                     <th>{{ $post->id }}</th>
                     <td>{{ $post->title }}</td>
-                    <td>
-                        <span class="label label-default">#{{ $category->name }},</span>
-                    </td>
                     <td><a href="{{ route('posts.show',$post->id)}}" class="btn btn-default btn-outline-primary">View</td>
                 </tr>
                 @endforeach

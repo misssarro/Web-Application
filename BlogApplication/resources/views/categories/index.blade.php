@@ -11,8 +11,8 @@
 </div>
 <div class="row">
     <div class="col-md-8">
-        <table class="table">
-            <thead>
+        <table class="table table-striped">
+            <thead class="table-dark"> 
                 <th>#</th>
                 <th>Name</th>
             </thead>
@@ -25,7 +25,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="row text-center">
+        <div class="row justify-content-center">
             <div>
                 {{ $categories ->links() }}
             </div>

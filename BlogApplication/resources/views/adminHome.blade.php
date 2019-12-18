@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    Profile
+                    You are logged in as an Admin!
                 </div>
             </div>
         </div>

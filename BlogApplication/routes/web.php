@@ -43,12 +43,19 @@ Route::put('tags/{id}','TagController@update')->name('tags.update')->middleware(
 Route::delete('tag/{id}','TagController@destroy')->name('tags.destroy')->middleware('auth');
 
 //Comments
-Route::post('comments/{post_id}','CommentController@store')->name('comments.store')->middleware('auth');
+Route::post('comments/{post_id}','CommentController@store')->name('comments.store')->middleware('auth');;
+Route::get('comments/{id}/edit','CommentController@edit')->name('comments.edit')->middleware('auth');
+Route::put('comments/{id}','CommentController@update')->name('comments.update')->middleware('auth');
+Route::delete('comments/{id}','CommentController@destroy')->name('comments.destroy')->middleware('auth');
+//Route::post('comments/{id}/delete','CommentController@delete')->name('comments.delete')->middleware('auth');
+
+//Route::get('/profile','ProfileController@profile')->name('profiles.profile');
+//Route::get('profile/create','ProfileController@create')->name('profiles.create');
+//Route::post('profile','ProfileController@store')->middleware('auth')->name('profiles.store');
 //profile
-
-Route::get('/profile','ProfileController@create')->name('profile.create');
-Route::get('profile/{id}','ProfileController@show')->name('profile.show');
-
+Route::get('profile','ProfileController@show')->middleware('auth')->name('profiles.show');
+Route::put('profile','ProfileController@update')->middleware('auth')->name('profiles.update');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('admin/home','HomeController@adminHome')->name('admin.home')->middleware('isAdmin');

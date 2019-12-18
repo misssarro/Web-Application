@@ -16,8 +16,7 @@ class CreateProfilesTable extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id'); //Forign key
-            $table->string('name');
-            $table->string('profile_pic');
+            //$table->string('name');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->

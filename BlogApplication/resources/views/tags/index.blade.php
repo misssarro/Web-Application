@@ -11,8 +11,8 @@
 </div>
 <div class="row">
     <div class="col-md-8">
-        <table class="table">
-            <thead>
+        <table class="table table-striped">
+            <thead class="table-dark" >
                 <th>#</th>
                 <th>Name</th>
             </thead>
@@ -25,7 +25,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="row text-center">
+        <div class="row justify-content-center">
             <div>
                 {{ $tags ->links() }}
             </div>
@@ -33,7 +33,7 @@
     </div>
     <div class="col-md-4">
         <div class="well">
-        <h2> New Tag</h2>
+        <h2> Add New Tag</h2>
         <form method="POST" action="{{ route('tags.store') }}">
             @csrf
             <div class="form-group">

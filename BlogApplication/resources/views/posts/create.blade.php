@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <h1>Create New Post</h1>
-        <form method="POST" action="{{ route('posts.store') }}">
+        <form method="POST" action="{{ route('posts.store') }}"  enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label name="title" >Title: </label>
@@ -40,6 +40,9 @@
                     </option>
                 @endforeach
             </select>
+            <hr>
+            <label>Upload Post Image</label>
+             <input type="file" name="post_image">
             <div class="form-group">
                 <label name="content">Post content: </label>
                 <textarea id="content" name="content" rows="10" class="form-control" value="{{ old('content') }}"></textarea>
@@ -53,8 +56,8 @@
 
 @endsection
 @section('scripts')
-    { !! HTML::script('js/select2.min.js') !!}
     <script type="text/javascript">
+        { !! HTML::script('js/select2.min.js') !!}
         $('.select2-multi').select2();
     </script>
 

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title',"| $tag->nam Tag")
+@section('title',"| $tag->name Tag")
 
 @section('content')
 <br>
@@ -39,14 +39,12 @@
                         <span class="label label-default">#{{ $tag->name }},</span>
                         @endforeach
                     </td>
-                    <td><a href="{{ route('posts.show',$post->id)}}" class="btn btn-default btn-outline-primary">View</td>
+                    <td><a href="{{ route('posts.show',$post->id)}}" class="btn btn-default btn-outline-primary"></a>View</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
-
-
 
 @endsection

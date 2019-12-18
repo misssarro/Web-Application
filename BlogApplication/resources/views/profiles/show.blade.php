@@ -1,45 +1,41 @@
 @extends('layouts.app')
-
-@section('title','Post details')
-
-
 @section('content')
-<div class="row">
-    <div class="col-md-8">
-    <h1>{{ $post->title }}</h1>
-    <p class="lead">{{$post->content }}</p>
-</div>
-<div class="col-md-4">
-    <div class="well">
-        <dl class="dl-horizontal">
-            <dt>Create at: {{ date('M j, Y h:ia',strtotime($post->created_at)) }} </dt>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt>Last updated at: {{ date('M j, Y h:ia', strtotime($post->updated_at)) }}</dt>
-        </dl>
-        <hr>
-        <div class="row">
-            <div class="col-sm-6">
-                <form method="POST" action="{{ route('posts.edit',['id'=> $post->id‘]) }}">
-                    @csrf
-                    <input type="submit" value="Edit" class="btn btn-primary btn-block">
-                </form>
-            </div>
-            <div class="col-sm-6">
-            <form method="POST" action="{{route('posts.destroy',['id' =>$post->id]) }}">
-                    @csrf
-                    @method('DELETE')
-                    <input type="submit" value="Delete" class="btn btn-danger btn-block">
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+           <img src="{{asset('images/'.$user->profile_pic)}}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
+           <h2>{{ $user->name }}'s Profile</h2>
+            <form enctype="multipart/form-data" action="{{ route('profiles.update') }}" method="POST">
+                 @csrf
+                 @method('PUT')
+                <label>Update Profile Image</label>
+                <input type="file" name="profile_pic">
+                <input type="submit" value="Save Profile Picture" class="pull-right btn btn-sm btn-primary"></input>
             </form>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 ">
-                    <br>
-                    <a  href="{{route('posts.index') }}" class=" btn btn-primary mx-auto d-block">Show all posts</a>
-                </div>
-            </div>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-12">
+    <h2>{{ $user->name }}'s Posts</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            <a href="{{ route('posts.create') }}" class=" btn btn-default btn-outline-primary " style="float:right">Create New Post</a>
+                @foreach($user->posts as $post)
+                <tr>
+                    <th>{{ $post->id }}</th>
+                    <td>{{ $post->title }}</td>
+                    <td><a href="{{ route('posts.show',$post->id)}}" class="btn btn-default btn-outline-primary  mr-1">View </a><a href="{{ route('posts.edit',$post->id)}}" class="btn btn-default btn-outline-primary">Edit</a></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
-</div>
-
 @endsection

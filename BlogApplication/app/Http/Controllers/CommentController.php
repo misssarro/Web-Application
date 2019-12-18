@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Comment;
 use App\Post;
 
+use Auth;
+
 class CommentController extends Controller
 {
     /**
@@ -13,9 +15,10 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Post $post)
     {
         //
+        return response()->json($post->comments()->with('user')->latest()->get());
     }
 
     /**
@@ -38,22 +41,24 @@ class CommentController extends Controller
     {
         //
         $post=Post::findOrFail($post_id);
-        $validatedData=$request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'comment_content' => 'required',
-        ]);
-    
         $comment=new Comment;
-        $comment->name= $validatedData['name'];
-        $comment->email= $validatedData['email'];
-        $comment->comment_content= $validatedData['comment_content'];
-        $comment->post()->associate($post);
+        $comment->post_id=$request['post_id'];
+        $comment->user_id=auth()->user()->id;
+        $comment->comment_content=$request['comment_content'];
         $comment->save();
 
         session()->flash('message','Comment was added.');
         
         return redirect()-> route('posts.show',$post->id);
+
+        /*$comment=$post->comments()->create([
+            'comment_content'=>$request->comment_content,
+            'user_id'=>Auth::id(),
+            'post_id'=>$post->id
+        ]);
+        $comment=Comment::where('id',$comment->id)->with('user')->first();
+
+        return $comment->toJason();*/
     }
 
     /**
@@ -76,6 +81,11 @@ class CommentController extends Controller
     public function edit($id)
     {
         //
+        $comment=Comment::findOrFail($id); 
+        if(auth()->user()->isAdmin xor $comment->user_id = auth()->user()){
+            $this->authorize('update',$comment);
+       }
+        return view('comments.edit',['comment'=>$comment]);
     }
 
     /**
@@ -88,7 +98,24 @@ class CommentController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $comment=Comment::findOrFail($id); 
+        $validatedData=$request->validate([
+            'comment_content'         => 'required|max:255',
+        ]);
+        $comment->comment_content=$request->input('comment_content');
+        $comment->save();
+        
+        session()->flash('message','Comment was updated successfully.');
+        return redirect()-> route('posts.show',$comment->post->id);
+
     }
+    /*public function delete($id)
+    {
+        //
+        $comment=Comment::findOrFail($id);        
+        $this->authorize('delete',$comment);
+        return view('comments.delete',['comment'=>$comment]);
+    }*/
 
     /**
      * Remove the specified resource from storage.
@@ -99,5 +126,14 @@ class CommentController extends Controller
     public function destroy($id)
     {
         //
+        $comment=Comment::findOrFail($id);  
+        if(auth()->user()->isAdmin xor $comment->user_id = auth()->user()){
+            $this->authorize('delete',$comment);
+       }
+        $post_id=  $comment->post->id;  
+        $comment->delete();  
+        session()->flash('message','Comment was deleted successfully.');
+        return redirect()-> route('posts.show',$post_id);
+
     }
 }

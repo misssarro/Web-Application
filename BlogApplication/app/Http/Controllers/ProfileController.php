@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use App\Profile;
+use Illuminate\Support\Facades\Auth;
+use Image;
+use Storage;
 
 class ProfileController extends Controller
 {
@@ -12,7 +16,11 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function profile()
+    {
+        return view('profile', array('user'=>auth()->user()));
+    }
+  /*  public function index()
     {
         //
         $profiles=Profile::all();
@@ -24,7 +32,7 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    /*public function create()
     {
         //
     }
@@ -40,17 +48,17 @@ class ProfileController extends Controller
         //
     }
 
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         //
-        $profile=Profile::findOrFail($id);
-        return view('profile.show',['profile'=>$profile]);
+        return view('profiles.show',['user'=>auth()->user()]);
     }
 
     /**
@@ -59,7 +67,7 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    /*public function edit($id)
     {
         //
     }
@@ -71,9 +79,21 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+    
+        if($request->hasFile('profile_pic')){
+            $image= $request->file('profile_pic');
+            $filename=time().'.'.$image->getClientOriginalExtension();
+            $path=public_path('images/'.$filename);
+            Image::make($image)->resize(300,300)->save($path);
+            $user = Auth::user();
+            $user->profile_pic=$filename;
+        }
+        $user->save();
+        return view('profiles.show',['user'=>auth()->user()]);
+
     }
 
     /**
@@ -82,8 +102,8 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    /*public function destroy($id)
     {
         //
-    }
+    }*/
 }

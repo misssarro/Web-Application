@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -35,5 +36,23 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    public function login(Request $request){
+        $data=$request->all();
+        $validatedData=$request->validate([
+            'email' => 'required|email',
+            'password'=> 'required'
+        ]);
+        if(auth()->attempt(array('email'=>$data['email'],'password'=>$data['password']))){
+            if(auth()->user()->isAdmin==1){
+                return redirect()->route('admin.home');
+            }
+            else{
+                return redirect()->route('home');
+            }
+        }
+
+        return redirect()->route('home');
+
     }
 }
