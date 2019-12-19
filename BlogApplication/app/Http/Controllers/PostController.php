@@ -68,7 +68,6 @@ class PostController extends Controller
             $post->post_image=$filename;
         }
         $post->save();
-        
         $post->tags()->sync($request->tags,false);
 
         session()->flash('message','Post was created successfully.');
@@ -87,14 +86,12 @@ class PostController extends Controller
         //
        
         $post= Post::findOrFail($id);
-
+        //Getting the post views 
         $blogKey = 'blog_' . $post->id;
         if (!Session::has($blogKey)) {
             $post->increment('page_view');
             Session::put($blogKey,1);
         }
-       // $post->increment('page_view');
-        //$post->page_view += 1; 
         return view('posts.show',['post'=>$post]);
     }
 

@@ -40,6 +40,9 @@ class CommentController extends Controller
     public function store(Request $request,$post_id)
     {
         //
+        $validatedData=$request->validate([
+            'comment_content' => 'required|max:255',
+        ]);
         $post=Post::findOrFail($post_id);
         $comment=new Comment;
         $comment->post_id=$request['post_id'];
@@ -109,13 +112,6 @@ class CommentController extends Controller
         return redirect()-> route('posts.show',$comment->post->id);
 
     }
-    /*public function delete($id)
-    {
-        //
-        $comment=Comment::findOrFail($id);        
-        $this->authorize('delete',$comment);
-        return view('comments.delete',['comment'=>$comment]);
-    }*/
 
     /**
      * Remove the specified resource from storage.
