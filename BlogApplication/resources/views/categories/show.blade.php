@@ -9,13 +9,17 @@
     </div>
     <hr>
     <div class="col-md-2">
+
         <a href="{{ route('categories.edit',$category->id) }}" class="btn btn-outline-primary float-right btn-block">Edit</a>
+        
     </div>
     <div class="col-md-2">
             <form method="POST" action="{{route('categories.destroy',['id' =>$category->id]) }}">
                     @csrf
                     @method('DELETE')
+        
                     <input type="submit" value="Delete" class="btn btn-danger btn-block">
+                    
             </form>
      </div>
 </div>

@@ -39,7 +39,7 @@
                         <span class="label label-default">#{{ $tag->name }},</span>
                         @endforeach
                     </td>
-                    <td><a href="{{ route('posts.show',$post->id)}}" class="btn btn-default btn-outline-primary"></a>View</td>
+                    <td><a href="{{ route('posts.show',$post->id) }}" class="btn btn-default btn-sm btn-outline-primary" >View</a>
                 </tr>
                 @endforeach
             </tbody>

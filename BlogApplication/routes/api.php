@@ -16,8 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('posts/{id}/comments','CommentController@index');
+/*Route::get('posts/{id}/comments','CommentController@index');
 Route::middleware('auth:api')->group(function(){
-    Route::post('/posts/{id}.comment','CommentController@store');
-});
+    Route::post('/posts/{id}/comment','CommentController@store');
+});*/
 

@@ -21,7 +21,10 @@
     <p class="lead">{{$post->content }}</p>
     <hr>
     <h5>Comments<small> {{$post->comments()->count()}} total </small></h5>
-    
+   <!-- <div style="margin-bottom:50px">
+        <textarea class="form-control" row="3" name="comment_content" placeholder="Add a comment here" v-model="commentBlock"></textarea>
+        <button class="btn btn-success" style="margin-top:10px">Add Comment</button>
+    </div>-->
     <div class="comments">
         <ul class="list-group">
            @foreach($post->comments as $comment)
@@ -51,7 +54,7 @@
         </ul>
     </div>
 
-   <!-- <div class="media" v-for="comment in comments">
+    <!--<div class="media" v-for="comment in comments">
         <div class="media-body">
            <h5 class="media-heading">by @{{comment.user.name}}</h5>
            <p>@{{comment.comment_content}}</p>
@@ -63,23 +66,23 @@
             <div class="col-md-8">
                  <form method="POST" action="{{ route('comments.store',$post->id) }}">
                 @csrf
-                <div class="form-group">
-                <textarea id="comment_content " placeholder="Your comment here" name="comment_content"  class="form-control" value="{{ old('comment_content') }}"></textarea>
+               <div class="form-group">
+                <textarea id="comment_content " rows="5"  placeholder="Your comment here" name="comment_content"  class="form-control" value="{{ old('comment_content') }}"></textarea>
                 </div>
                  <div class="form-group">
                     <button type="submit" class="btn btn-primary">Add Comment</button>
                  </div>
 
-               <!--  <div class="form-group">
+               <!-- <div class="form-group">
                      <label name="name" >Name: </label>
                      <input id="name" name="name" class="form-control" value="{{ old('name') }}">
                  </div>-->
                 
-               <!-- <div style="margin-bottom:50px;" v-if="user">
+              <!-- <div style="margin-bottom:50px;" v-if="user">
                 <textarea id="comment_content" rows="3" placeholder="Your comment here" name="comment_content"  class="form-control" v-model="commentBlock"></textarea>
                 <button class= "btn btn-primary" style="margin-top:10px" @click.prevent="postComment">Add Comment</button>
                 </div>-->
-               <!-- <div v-else>
+                <!--<div v-else>
                     <h5>Login to add your comment</h5><button class="btn btn-primary" href="{{ route('login') }}">Login</a>
                 </div>-->
     
@@ -91,7 +94,7 @@
 <div class="col-md-4">
     <div class="well">
     <dl class="dl-horizontal">
-            <dt>View: {{ $post->page_view }} </dt>
+            <dt>View: {{ $post->page_view }}  </dt>
         </dl>
         <dl class="dl-horizontal">
             <dt>Create at: {{ date('M j, Y h:ia',strtotime($post->created_at)) }} </dt>
@@ -139,7 +142,7 @@
            comments: {},
            commentBlock:'',
            post:{!! $post->toJson()!!},
-           user:{!! Auth::check()?Auth::user()->toJson():'null' !!}
+           user:{!! Auth::check() ? Auth::user()->toJson():'null' !!}
        },
        mounted(){
            this.getComments();
@@ -153,11 +156,11 @@
                     .catch(function(error)){
                         console.log(error);
                     }
-   );
+                });
            },
            postComment(){
                axios.post('api/posts/'+this.post.id+'/comment',{
-                   api.token: this.user.api_token,
+                   api_token: this.user.api_token,
                    comment_content:this:commentBlock
                })
                .then((response)=>{
@@ -165,11 +168,11 @@
                    this.commentBlock='';
 
                })
-               .catch((error)=>{
+               .catch(function(error){
                    console.log(error);
-               })
+               });
            }
        }
-   })
-<script>
+   });
+</script>
 @endsection-->

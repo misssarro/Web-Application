@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Post;
 use App\Category;
@@ -86,7 +87,13 @@ class PostController extends Controller
         //
        
         $post= Post::findOrFail($id);
-        $post->increment('page_view');
+
+        $blogKey = 'blog_' . $post->id;
+        if (!Session::has($blogKey)) {
+            $post->increment('page_view');
+            Session::put($blogKey,1);
+        }
+       // $post->increment('page_view');
         //$post->page_view += 1; 
         return view('posts.show',['post'=>$post]);
     }

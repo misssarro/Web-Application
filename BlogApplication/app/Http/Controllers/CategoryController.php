@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
-
+use App\User;
 class CategoryController extends Controller
 {
     /**
@@ -16,6 +16,12 @@ class CategoryController extends Controller
     {
         //
         $categories=Category::orderBy('id','desc')->paginate(5);
+
+        //$this->authorize('viewAny');
+        $user=new User;
+       if (auth()->user()->isAdmin===$user->id){
+            $this->authorize('viewAny',Category::class);
+       }
         return view('categories.index',['categories'=>$categories]);
     }
 
@@ -38,11 +44,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+       
         $validatedData=$request->validate([
             'name'         => 'required|max:255',
         ]);
         $category=new Category;
         $category->name= $validatedData['name'];
+        $category->user_id=auth()->user()->id;
         $category->save();
 
         session()->flash('message','New Category was created successfully.');
@@ -61,6 +69,9 @@ class CategoryController extends Controller
     {
         //
        $category=Category::findOrFail($id);
+       if(auth()->user()->isAdmin){
+            $this->authorize('view',$category);
+   }
        return view('categories.show',['category'=>$category]);
     }
 
@@ -74,6 +85,10 @@ class CategoryController extends Controller
     {
         //
         $category=Category::findOrFail($id);
+        $user=new User;
+        if(auth()->user()->isAdmin === $user->id){
+            $this->authorize('update',$category);
+       }
         return view('categories.edit',['category'=>$category]);
     }
 
@@ -109,7 +124,10 @@ class CategoryController extends Controller
     {
       //
         $category=Category::findOrFail($id);
-
+        $user=new User;
+        if(auth()->user()->isAdmin === $user->id){
+            $this->authorize('delete',$category);
+       }
         $category->delete();
         session()->flash('message','Category was deleted successfully.');
         return redirect()-> route('categories.index');

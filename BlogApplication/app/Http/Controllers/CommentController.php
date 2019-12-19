@@ -18,7 +18,7 @@ class CommentController extends Controller
     public function index(Post $post)
     {
         //
-        return response()->json($post->comments()->with('user')->latest()->get());
+       // return response()->json($post->comments()->with('user')->latest()->get());
     }
 
     /**
@@ -51,9 +51,9 @@ class CommentController extends Controller
         
         return redirect()-> route('posts.show',$post->id);
 
-        /*$comment=$post->comments()->create([
+      /* $comment=$post->comments()->create([
             'comment_content'=>$request->comment_content,
-            'user_id'=>Auth::id(),
+            'user_id'=> auth()->user()->id,
             'post_id'=>$post->id
         ]);
         $comment=Comment::where('id',$comment->id)->with('user')->first();
@@ -82,7 +82,7 @@ class CommentController extends Controller
     {
         //
         $comment=Comment::findOrFail($id); 
-        if(auth()->user()->isAdmin xor $comment->user_id = auth()->user()){
+        if(auth()->user()->isAdmin xor $comment->user_id === auth()->user()){
             $this->authorize('update',$comment);
        }
         return view('comments.edit',['comment'=>$comment]);
@@ -127,7 +127,7 @@ class CommentController extends Controller
     {
         //
         $comment=Comment::findOrFail($id);  
-        if(auth()->user()->isAdmin xor $comment->user_id = auth()->user()){
+        if(auth()->user()->isAdmin xor $comment->user_id === auth()->user()){
             $this->authorize('delete',$comment);
        }
         $post_id=  $comment->post->id;  

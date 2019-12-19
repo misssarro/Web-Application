@@ -71,9 +71,11 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                          <a class= "dropdown-item" href="{{ route('profiles.show') }}"> Profile</a>
                                          <a class= "dropdown-item" href="{{ route('posts.create') }}">Add Post</a>
-                                         <a class= "dropdown-item" href="{{ route('categories.index') }}">Categories</a>
-                                         <a class= "dropdown-item" href="{{ route('tags.index') }}">Tags</a>
-                                         <a class="dropdown-item" href="{{ route('logout') }}"
+                                       <!-- @can('viewAny')
+                                        <a class= "dropdown-item" href="{{ route('categories.index') }}">Categories</a>
+                                        @endcan-->
+                                        <a class= "dropdown-item" href="{{ route('posts.index') }}">Blog Posts</a>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}

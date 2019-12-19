@@ -13,7 +13,9 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                @can('update',$category)
                 <button type="submit" class="btn btn-primary">Save changes</button>
+                @endcan
             </div>
     </div>
 </form>

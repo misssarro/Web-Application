@@ -26,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-            <a href="{{ route('posts.create') }}" class=" btn btn-default btn-outline-primary " style="float:right">Create New Post</a>
+           <!-- <a href="{{ route('posts.create') }}" class=" btn btn-default btn-outline-primary " style="float:right">Create New Post</a>-->
                 @foreach($user->posts as $post)
                 <tr>
                     <th>{{ $post->id }}</th>
@@ -36,6 +36,14 @@
                 @endforeach
             </tbody>
         </table>
+        @if(Auth::check()!=null)
+        @if($user->isAdmin == $user->id)
+        <nav>
+        <a class= " btn btn-default btn btn-dark "  href="{{ route('categories.index') }}">View Categories</a>
+        <a class= " btn btn-default btn btn-dark"   href="{{ route('tags.index') }}">View Tags</a>
+         @endif
+         @endif
+        </nav>
     </div>
 </div>
 @endsection

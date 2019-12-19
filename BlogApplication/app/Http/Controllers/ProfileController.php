@@ -82,7 +82,6 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         //
-    
         if($request->hasFile('profile_pic')){
             $image= $request->file('profile_pic');
             $filename=time().'.'.$image->getClientOriginalExtension();

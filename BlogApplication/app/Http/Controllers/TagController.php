@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Tag;
+use App\User;
 
 class TagController extends Controller
 {
@@ -15,6 +16,10 @@ class TagController extends Controller
     public function index()
     {
         //
+        $user=new User;
+        if (auth()->user()->isAdmin===$user->id){
+            $this->authorize('viewAny',Tag::class);
+       }
         $tags=Tag::orderBy('id','desc')->paginate(5);
         return view('tags.index',['tags'=>$tags]);
     }
@@ -43,6 +48,7 @@ class TagController extends Controller
         ]);
         $tag=new Tag;
         $tag->name= $validatedData['name'];
+        $tag->user_id=auth()->user()->id;
         $tag->save();
 
         session()->flash('message','New Tag was created successfully.');
@@ -60,6 +66,9 @@ class TagController extends Controller
     {
         //
         $tag=Tag::findOrFail($id);
+        if(auth()->user()->isAdmin){
+            $this->authorize('view',$tag);
+   }
         return view('tags.show',['tag'=>$tag]);
     }
 
@@ -73,6 +82,9 @@ class TagController extends Controller
     {
         //
         $tag=Tag::findOrFail($id);
+        if(auth()->user()->isAdmin){
+            $this->authorize('update',$tag);
+   }
         return view('tags.edit',['tag'=>$tag]);
     }
 
@@ -109,6 +121,9 @@ class TagController extends Controller
     {
         //
         $tag=Tag::findOrFail($id);
+        if(auth()->user()->isAdmin){
+            $this->authorize('delete',$tag);
+   }
         $tag->posts()->detach();
 
         $tag->delete();
