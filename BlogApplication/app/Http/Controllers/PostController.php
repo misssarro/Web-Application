@@ -19,8 +19,6 @@ class PostController extends Controller
     public function index()
     {
         //
-
-       //$posts=Post::All();
         
         $posts=Post::orderBy('id','desc')->paginate(5);
         return view('posts.index',['posts'=>$posts]);
@@ -34,8 +32,8 @@ class PostController extends Controller
     public function create()
     {
         //
-        $categories=Category::all();
-        $tags=Tag::all();
+        $categories=Category::orderBy('id','desc')->get();
+        $tags=Tag::orderBy('id','desc')->get();
 
         return view('posts.create',['categories'=>$categories,'tags'=>$tags]);
     }
@@ -87,10 +85,10 @@ class PostController extends Controller
        
         $post= Post::findOrFail($id);
         //Getting the post views 
-        $blogKey = 'blog_' . $post->id;
-        if (!Session::has($blogKey)) {
+        $blog = 'blog_' . $post->id;
+        if (!Session::has($blog)) {
             $post->increment('page_view');
-            Session::put($blogKey,1);
+            Session::put($blog,1);
         }
         return view('posts.show',['post'=>$post]);
     }
