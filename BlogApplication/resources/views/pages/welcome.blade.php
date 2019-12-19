@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="jumbotron bg-dark text-white">
             <h1>Welcome to the blog</h1>
-            <p class="lead"> Thank you for visiting. Please read my popular posts</p>
+            <p class="lead"> Thank you for visiting. Please read the recent posts</p>
             </div>
         </div>
     </div>
