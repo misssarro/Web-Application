@@ -18,7 +18,6 @@ class CommentController extends Controller
     public function index(Post $post)
     {
         //
-       // return response()->json($post->comments()->with('user')->latest()->get());
     }
 
     /**
@@ -54,14 +53,6 @@ class CommentController extends Controller
         
         return redirect()-> route('posts.show',$post->id);
 
-      /* $comment=$post->comments()->create([
-            'comment_content'=>$request->comment_content,
-            'user_id'=> auth()->user()->id,
-            'post_id'=>$post->id
-        ]);
-        $comment=Comment::where('id',$comment->id)->with('user')->first();
-
-        return $comment->toJason();*/
     }
 
     /**

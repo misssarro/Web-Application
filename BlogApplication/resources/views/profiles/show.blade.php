@@ -26,7 +26,6 @@
                 </tr>
             </thead>
             <tbody>
-           <!-- <a href="{{ route('posts.create') }}" class=" btn btn-default btn-outline-primary " style="float:right">Create New Post</a>-->
                 @foreach($user->posts as $post)
                 <tr>
                     <th>{{ $post->id }}</th>

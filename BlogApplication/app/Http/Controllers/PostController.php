@@ -141,16 +141,10 @@ class PostController extends Controller
         $post->title= $request->input('title');
         $post->content=$request->input('content');
         $post->category_id=$request->input('category_id');
-        //$tags=$request->input('tag',[]);
+    
         $post->save();
         
-       /*if(isset($request->tags)){
-          $post->tags()->sync($request->tags,true);
-        }
-        else{
-            $post->tags()->sync(array());
-        }*/
-        
+       
 
         session()->flash('message','Post was updated successfully.');
         return redirect()-> route('posts.show',$post->id);
